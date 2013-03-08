@@ -3,11 +3,11 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 datarootdir=@datarootdir@
 datadir=@datadir@
-includedir=@includedir@/liblibtagcoverart-0.1
+includedir=@includedir@
 
 Name: liblibtagcoverart
 Description: Sample library created by Anjuta project wizard.
 Version: @VERSION@
-Requires: 
+Requires: taglib
 Libs: -L${libdir} -llibtagcoverart
 Cflags: -I${includedir}

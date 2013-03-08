@@ -21,13 +21,13 @@ AC_PROG_CXX
 LT_INIT
 
 
-PKG_CHECK_MODULES(LIBTAGCOVERART, [taglib ])
+PKG_CHECK_MODULES(LIBTAGCOVERART, [taglib elementals])
 
 
 
 
 AC_OUTPUT([
 Makefile
-src/libtagcoverart-0.1.pc
+src/libtagcoverart.pc
 src/Makefile
 ])

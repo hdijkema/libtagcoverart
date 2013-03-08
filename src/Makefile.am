@@ -16,17 +16,19 @@ lib_LTLIBRARIES = libtagcoverart.la
 
 
 libtagcoverart_la_SOURCES = \
-	lib.c
+	libtagcoverart.c \
+	tagcoverart.cpp
 
 libtagcoverart_la_LDFLAGS = 
 
 libtagcoverart_la_LIBADD = $(LIBTAGCOVERART_LIBS)
 
 include_HEADERS = \
-	libtagcoverart.h
+	libtagcoverart.h \
+	libtagcoverart.hpp
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libtagcoverart-0.1.pc
+pkgconfig_DATA = libtagcoverart.pc
 
 EXTRA_DIST = \
-	libtagcoverart-0.1.pc.in
+	libtagcoverart.pc.in

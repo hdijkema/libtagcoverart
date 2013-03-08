@@ -1,6 +1,6 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*- */
+/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 2 -*- */
 /*
- * lib.h
+ * libtagcoverart.h
  * Copyright (C) 2013 Hans Oesterholt <debian@oesterholt.net>
  * 
  * libtagcoverart is free software: you can redistribute it and/or modify it
@@ -17,4 +17,19 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-int libtagcoverart_func (void);
+#ifndef __TAGCOVERART_HOD
+#define __TAGCOVERART_HOD
+
+#include <elementals.h>
+
+typedef struct{
+  char* media_file;
+  void* ccover;
+} tag_cover_art_t; 
+
+tag_cover_art_t* tag_cover_art_new(const char* media_file);
+el_bool tag_cover_art_extract(tag_cover_art_t* tag, const char* target_file);
+void tag_cover_art_destroy(tag_cover_art_t* tag);
+
+
+#endif
