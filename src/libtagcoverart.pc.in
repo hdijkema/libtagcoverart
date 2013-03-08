@@ -9,5 +9,5 @@ Name: liblibtagcoverart
 Description: Sample library created by Anjuta project wizard.
 Version: @VERSION@
 Requires: taglib
-Libs: -L${libdir} -llibtagcoverart
+Libs: -L${libdir} -ltagcoverart
 Cflags: -I${includedir}
