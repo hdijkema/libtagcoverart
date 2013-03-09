@@ -255,6 +255,7 @@ extern "C" {
   {
     CCover* c = (CCover*) cc;
     std::string tg(target);
+    //return el_false;
     TagLib::FileRef ref(filename);
     return c->GetEmbedded(ref, tg);
   }

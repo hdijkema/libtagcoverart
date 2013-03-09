@@ -17,7 +17,7 @@ lib_LTLIBRARIES = libtagcoverart.la
 
 libtagcoverart_la_SOURCES = \
 	libtagcoverart.c \
-	tagcoverart.cpp
+	tagcoverart.cpp 
 
 libtagcoverart_la_LDFLAGS = 
 

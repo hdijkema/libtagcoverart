@@ -3,6 +3,11 @@
 #include "libtagcoverart.hpp"
 #include <elementals.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 tag_cover_art_t* tag_cover_art_new(const char* media_file)
 {
   tag_cover_art_t* tag = (tag_cover_art_t*) mc_malloc(sizeof(tag_cover_art_t));
@@ -22,3 +27,7 @@ void tag_cover_art_destroy(tag_cover_art_t* tag)
   mc_free(tag->media_file);
   mc_free(tag);
 }
+
+#ifdef __cplusplus
+}
+#endif

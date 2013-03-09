@@ -20,6 +20,10 @@
 #ifndef __TAGCOVERART_HOD
 #define __TAGCOVERART_HOD
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <elementals.h>
 
 typedef struct{
@@ -30,6 +34,10 @@ typedef struct{
 tag_cover_art_t* tag_cover_art_new(const char* media_file);
 el_bool tag_cover_art_extract(tag_cover_art_t* tag, const char* target_file);
 void tag_cover_art_destroy(tag_cover_art_t* tag);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif
