@@ -1,6 +1,6 @@
 VERSION=$(shell ./get_version.sh)
 MYDIST=$(shell cat /etc/lsb-release | grep CODENAME | sed -e 's/[^=]*[=]//')
-SUBVERSION=1
+SUBVERSION=2
 PACKAGE=libtagcoverart
 DEPENDS=libtagc0,elementals,libpcre3
 DEPENDS1=
