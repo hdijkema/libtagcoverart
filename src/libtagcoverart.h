@@ -35,6 +35,9 @@ tag_cover_art_t* tag_cover_art_new(const char* media_file);
 el_bool tag_cover_art_extract(tag_cover_art_t* tag, const char* target_file);
 void tag_cover_art_destroy(tag_cover_art_t* tag);
 
+el_bool tag_cover_art_get_composer(tag_cover_art_t* tag, char** composer);
+el_bool tag_cover_art_set_composer(tag_cover_art_t* tag, const char* composer);
+
 #ifdef __cplusplus
 }
 #endif

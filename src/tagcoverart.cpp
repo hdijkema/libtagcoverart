@@ -20,7 +20,7 @@
 extern "C" {
 #include <stdio.h>
 #include <unistd.h>
-#include <elementals/types.h>
+#include <elementals.h>
 }
 
 /*
@@ -234,6 +234,95 @@ bool CCover::WriteCover(const TagLib::ByteVector& data, const std::string& targe
 	return written;
 }
 
+bool CCover::SetComposer(TagLib::FileRef &file, const std::string & composer)
+{
+  return false;
+}
+
+bool CCover::GetComposer(TagLib::FileRef& fr, std::string& composer)
+{
+  TagLib::MPEG::File        * mpgfile   = NULL;
+  TagLib::Ogg::Vorbis::File * oggfile   = NULL;
+  TagLib::FLAC::File        * flacfile  = NULL;
+  TagLib::Ogg::XiphComment  * xiph      = NULL;
+  TagLib::ID3v2::Tag        * id3v2     = NULL;
+#ifdef TAGLIB_HAVE_MP4
+  TagLib::MP4::File         * mp4file   = NULL;
+  TagLib::MP4::Tag          * mp4       = NULL;
+#endif
+
+  if ((oggfile = dynamic_cast<TagLib::Ogg::Vorbis::File*>(fr.file()))) {
+    xiph=oggfile->tag();
+    //log_debug("ogg");
+  } else if ((flacfile = dynamic_cast<TagLib::FLAC::File*>(fr.file()))){
+    xiph=flacfile->xiphComment();
+    id3v2=flacfile->ID3v2Tag();
+    //log_debug("flac");
+  } else if ((mpgfile = dynamic_cast<TagLib::MPEG::File*>(fr.file()))){
+    id3v2=mpgfile->ID3v2Tag();
+    //log_debug("mpg");
+  }
+#ifdef TAGLIB_HAVE_MP4
+  else if ((mp4file = dynamic_cast<TagLib::MP4::File*>(fr.file()))){
+    mp4=mp4file->tag();
+  }
+#endif
+#ifndef TAGLIB_HAVE_MP4
+  void* mp4 = NULL;
+#endif
+  //log_debug4("xiph=%p, id3v2=%p, mp4=%p", xiph, id3v2, mp4); 
+
+  bool retval = true;
+  if (xiph) 
+    retval = xiph_get_field(xiph, "COMPOSER",composer);
+  else if (id3v2)
+    retval = id3v2_get_field(id3v2, "TCOM",composer);
+#ifdef TAGLIB_HAVE_MP4  
+  else if (mp4)
+    retval = mp4_get_field(mp4file, "\251wrt",composer);
+#endif  
+  else
+    retval = false;
+  
+  //log_debug2("composer = %s", composer.c_str());
+  
+  return retval;
+}
+
+bool CCover::xiph_get_field(TagLib::Ogg::XiphComment* xiph, const char * field, std::string & value) 
+{
+  if (xiph->contains(field)) {
+    value=xiph->fieldListMap()[field].front().toCString(true);
+    return true;
+  } else {
+    return false;
+  }
+}
+  
+bool CCover::id3v2_get_field(TagLib::ID3v2::Tag *id3v2, const char * field, std::string & value)
+{
+  if (id3v2->frameListMap().contains(field) && !id3v2->frameListMap()[field].isEmpty() ) {
+    value=id3v2->frameListMap()[field].front()->toString().toCString(true);
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+
+#ifdef TAGLIB_HAVE_MP4
+bool CCover::mp4_get_field(TagLib::MP4::Tag* mp4, const char * field,std::string & value) 
+{
+  if (mp4->itemListMap().contains(field) && !mp4->itemListMap().isEmpty()) {
+    value=mp4->itemListMap()[field].toStringList().toString(", ").toCString(true);
+    return true;
+  } else {
+    return false;
+  }
+}
+#endif
+
 
 extern "C" {
   ccover_t ccover_new(void)
@@ -264,6 +353,28 @@ extern "C" {
   {
     CCover* c = (CCover*) cc;
     delete c;
+  }
+  
+  el_bool ccover_get_composer(ccover_t cc, const char* filename, char** composer)
+  {
+    CCover* c = (CCover*) cc;
+    TagLib::FileRef ref(filename);
+    std::string s;
+    if (c->GetComposer(ref, s)) {
+      *composer = mc_strdup(s.c_str());
+      return el_true;
+    } else {
+      *composer = NULL;
+      return el_false;
+    }
+  }
+  
+  el_bool ccover_set_composer(ccover_t cc, const char* filename, const char* composer)
+  {
+    CCover* c = (CCover*) cc;
+    TagLib::FileRef ref(filename);
+    std::string cp(composer);
+    return c->SetComposer(ref, cp);
   }
 
 }

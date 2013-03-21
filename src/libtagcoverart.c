@@ -28,6 +28,16 @@ void tag_cover_art_destroy(tag_cover_art_t* tag)
   mc_free(tag);
 }
 
+el_bool tag_cover_art_get_composer(tag_cover_art_t* tag, char** composer)
+{
+  return ccover_get_composer(tag->ccover, tag->media_file, composer); 
+}
+
+el_bool tag_cover_art_set_composer(tag_cover_art_t* tag, const char* composer)
+{
+  return ccover_set_composer(tag->ccover, tag->media_file, composer);
+}
+
 #ifdef __cplusplus
 }
 #endif
